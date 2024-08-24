@@ -9,7 +9,7 @@ ffmpeg.setFfprobePath('C:\\ffmpeg\\bin\\ffprobe.exe');
 
 const MIN_DURATION = 5;
 const MAX_DURATION = 25;
-const MAX_SIZE = 25 * 1024 * 1024;
+const MAX_SIZE = 25 * 1024 * 1024 ;
 
 
 /**
