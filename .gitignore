@@ -1,0 +1,57 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+jspm_packages/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Environment files
+.env
+.env.* 
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# NPM lock file (optional, can be included if you want to lock dependencies)
+# package-lock.json
+# yarn.lock
+
+# Temporary files
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# Mac-specific
+*.DS_Store
+
+# Windows-specific
+*.cab
+*.msi
+*.lnk
+
+# Miscellaneous
+*.tgz
+*.zip
+*.rar
+
+# Database file
+database.db
+
+# Video files
+*.mp4
+*.avi
+*.mkv
