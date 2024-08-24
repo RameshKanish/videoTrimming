@@ -13,9 +13,7 @@ dist/
 build/
 coverage/
 
-# Environment files
-.env
-.env.* 
+
 
 # IDEs and editors
 .vscode/

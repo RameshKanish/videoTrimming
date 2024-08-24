@@ -1,3 +1,4 @@
+// models/videoSchema.js
 const db = require('./../utils/db'); // Import the database connection
 
 // Create the videos table if it doesn't exist
@@ -16,5 +17,4 @@ db.serialize(() => {
         }
     });
 });
-
-// Function to insert a video into the database
+module.exports = db;
