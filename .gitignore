@@ -1,6 +1,5 @@
 # Node.js dependencies
 node_modules/
-.env
 
 # Build outputs
 dist/
@@ -20,6 +19,7 @@ coverage/
 
 # Database file
 database.db
+.env
 
 # Video files
 *.mp4
