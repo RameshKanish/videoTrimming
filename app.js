@@ -1,6 +1,6 @@
 const express = require('express');
 
-app = express();
+const app = express();
 const swaggerDocs = require('./swagger');
 require('dotenv').config()
 
@@ -15,7 +15,8 @@ swaggerDocs(app);
 
 app.use('/upload', require('./src/controllers/videoController').router);
 
+    app.listen(port, () => {
+        console.log(`Server is running on ${port}`);
+    });
 
-app.listen(port , () =>{
-    console.log(`Server is running on ${port}`);
-});
+module.exports = app;
