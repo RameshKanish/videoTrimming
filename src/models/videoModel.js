@@ -7,7 +7,9 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS videos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             filename TEXT NOT NULL,
-            data BLOB NOT NULL
+            data BLOB NOT NULL,
+            token TEXT UNIQUE NOT NULL,
+            token_expiry INTEGER NOT NULL
         )
     `, (err) => {
         if (err) {

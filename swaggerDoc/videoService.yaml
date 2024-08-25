@@ -1,0 +1,209 @@
+openapi: 3.0.0
+info:
+  title: Video File Manager API
+  version: 1.0.0
+  description: API documentation for video file management operations.
+servers:
+  - url: 'http://localhost:3000'
+tags:
+  - name: Videos
+    description: API endpoints for video management
+
+components:
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+security:
+  - AuthorizationHeader: []  # Apply security globally
+
+paths:
+  /upload:
+    post:
+      tags:
+        - Videos
+      summary: Upload a video file
+      description: Uploads a video file and stores it in the system.
+      security:
+        - AuthorizationHeader: []  # Apply security to this endpoint
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+                - file
+        required: true
+      responses:
+        '200':
+          description: Video uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  duration:
+                    type: integer
+                  videoId:
+                    type: integer
+                  link:
+                    type: string
+        '400':
+          description: Bad request if no file is uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /upload/trim:
+    post:
+      tags:
+        - Videos
+      summary: Trim a video file
+      description: Trims a video file based on provided start and end times.
+      security:
+        - AuthorizationHeader: []  # Apply security to this endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                videoId:
+                  type: string
+                startTime:
+                  type: string
+                  format: date-time
+                endTime:
+                  type: string
+                  format: date-time
+                outputFilename:
+                  type: string
+              required:
+                - videoId
+                - startTime
+                - endTime
+                - outputFilename
+        required: true
+      responses:
+        '200':
+          description: Video trimmed successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request if any parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /upload/merge:
+    post:
+      tags:
+        - Videos
+      summary: Merge multiple video files
+      description: Merges multiple video files into one based on provided video IDs.
+      security:
+        - AuthorizationHeader: []  # Apply security to this endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                videoIds:
+                  type: array
+                  items:
+                    type: string
+                outputFilename:
+                  type: string
+              required:
+                - videoIds
+                - outputFilename
+        required: true
+      responses:
+        '200':
+          description: Videos merged successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request if any parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /upload/verifyToken:
+    get:
+      tags:
+        - Videos
+      summary: Verify video by token
+      description: Retrieves video details based on a unique token and streams the video file if the token is valid.
+      security:
+        - AuthorizationHeader: []  # Apply security to this endpoint
+      parameters:
+        - in: query
+          name: uniqueToken
+          schema:
+            type: string
+          required: true
+          description: The unique token for verifying the video
+      responses:
+        '200':
+          description: Video details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  filePath: 
+                    type: string
+        '400':
+          description: Bad request if token is missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden if the token has expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found if video or file does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

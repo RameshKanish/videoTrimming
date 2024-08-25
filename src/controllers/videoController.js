@@ -2,6 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const videoService = require('./../service/videoService');
 const path = require('path');
 const multer = require('multer');
+const authenticateToken = require('./../middleware/auth'); // Ensure this path is correct
 
 const upload = multer({
     storage: multer.memoryStorage()
@@ -53,10 +54,22 @@ const mergeVideo = async function (req, res) {
 };
 
 
-router.post('', upload.single('file'), uploadVideo);
-router.post('/trim', trimmVideo);
-router.post('/merge', mergeVideo);
+const getVideoByToken = async function (req, res) {
+    const { uniqueToken } = req?.query;
+    if (uniqueToken) {
+        try {
+            const result = await videoService.getVideoByToken(uniqueToken);
+            res.status(200).json(result);
 
+        } catch (err) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+};
 
+router.post('', authenticateToken ,upload.single('file'), uploadVideo);
+router.post('/trim', authenticateToken,trimmVideo);
+router.post('/merge', authenticateToken,mergeVideo);
+router.get('/verifyToken', getVideoByToken); 
 
-module.exports = { router, uploadVideo, trimmVideo };
+module.exports = { router, uploadVideo, trimmVideo ,getVideoByToken};
