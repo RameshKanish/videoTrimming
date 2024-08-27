@@ -2,7 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const videoService = require('./../service/videoService');
 const path = require('path');
 const multer = require('multer');
-const authenticateToken = require('./../middleware/auth'); // Ensure this path is correct
+const authenticateToken = require('./../middleware/auth'); 
 
 const upload = multer({
     storage: multer.memoryStorage()

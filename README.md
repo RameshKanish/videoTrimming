@@ -43,7 +43,7 @@ FFPROBE_PATH=C:\\ffmpeg\\bin\\ffprobe.exe
 npm run start
 
 
-5 - Installing FFmpeg
+5 - Installing FFmpeg   
 FFmpeg is a crucial dependency for processing video files in this application. Follow the steps below to install and set up FFmpeg on your system:
 
 Windows

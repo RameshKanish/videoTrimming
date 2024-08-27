@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const CONFIG = require('./../config/config');
 const commonService = require('../service/commonService');
-// Set the paths to ffmpeg and ffprobe
 
+// Set the paths to ffmpeg and ffprobe
 const ffmpegPath = process.env.FFMPEG_PATH;
 const ffprobePath = process.env.FFPROBE_PATH;
 
@@ -25,12 +25,9 @@ if (ffprobePath) {
 require('./../../swagger')
 /**
  * Original Author    : Ramesh R S 
- * Author		      : Ramesh R S 
- * Created On		  : 20-08-2024
- * Modified on        : 20-08-2024	
- * Function           : createAttendance
- *  Method createAttendance is used to create attendence 
- * @param {} data data which is used to create the attendence
+ * Function           : uploadVideo
+ *  Method uploadVideo is used to uploadVideo the video
+ * @param {} data data which is used to upload the video
  * @return response
  */
 
@@ -63,7 +60,7 @@ const uploadVideo = async function (filename, fileBuffer) {
                 resolve(videoDuration);
             });
         });
-        const uniqueToken = commonService.generateUniqueToken(); // Implement this function as needed
+        const uniqueToken = commonService.generateUniqueToken(); 
         const token_expiry = Date.now() + CONFIG.LINK_EXPIRY_DURATION;
 
         // If duration is valid, insert video into database
@@ -112,12 +109,13 @@ const insertVideo = async function (filename, fileBuffer, token, token_expiry) {
 
 
 /**
- * Author		      : Ramesh R S CEN(380)
- * Created On		  : 20-08-2024
- * Modified on        : 20-08-2024	
- * Function           : getVideoById
- *  Method getVideoById is used to get thee video by id
+ * Author		      : Ramesh R S 	
+ * Function           : trimVideo
+ *  Method trimVideo is used to trim the video
  * @param {} videoId data which is used to create the attendence
+ * @param {} startTime data which is used to create the attendence
+ * @param {} endTime data which is used to create the attendence
+ * @param {} outputFilename data which is used to create the attendence
  * @return response
  */
 
@@ -156,21 +154,18 @@ const trimVideo = async function (videoId, startTime, endTime, outputFilename) {
 
 
 /**
- * Original Author    : Ramesh R S CEN(380)
- * Author		      : Ramesh R S CEN(380)
- * Created On		  : 20-08-2024
- * Modified on        : 20-08-2024	
- * Function           : getVideoById
- *  Method getVideoById is used to get thee video by id
- * @param {} videoId data which is used to create the attendence
+ * Original Author    : Ramesh R S 
+ * Function           : mergeVideos
+ *  Method mergeVideos is used to merger the video
+ * @param {} videoIds data which is used to merge the video
  * @return response
  */
 
 
 const mergeVideos = async function (videoIds, outputFilename) {
     try {
-        const targetWidth = 1920;  // Set your desired width
-        const targetHeight = 1080; // Set your desired height
+        const targetWidth = 1920;  
+        const targetHeight = 1080; 
 
         if (videoIds && videoIds.length) {
             const videoFiles = [];
@@ -249,6 +244,13 @@ const resizeVideo = (inputPath, outputPath, width, height) => {
     });
 };
 
+/**
+ * Original Author    : Ramesh R S 
+ * Function           : getVideoByToken
+ *  Method getVideoByToken is used to get the video
+ * @param {} token data which is used to get the data
+ * @return response
+ */
 
 const getVideoByToken = async function (token) {
     if (!token) {
@@ -257,7 +259,7 @@ const getVideoByToken = async function (token) {
 
     try {
         const row = await commonService.getVideo(token);
-        
+
         if (!row) {
             return {
                 success: false,
@@ -265,7 +267,7 @@ const getVideoByToken = async function (token) {
             };
         }
 
-        // Check if the token is expired
+        // Check if the token is expired  
         const currentTime = Date.now();
         if (currentTime > row.token_expiry) {
             return {
@@ -274,7 +276,8 @@ const getVideoByToken = async function (token) {
             };
         }
 
-        // Check if file_name is defined
+
+        // Check if filename is defined
         if (!row.filename) {
             return {
                 success: false,
@@ -282,20 +285,24 @@ const getVideoByToken = async function (token) {
             };
         }
 
-        // Prepare video file path
-        const videoPath = path.join(__dirname, 'videos', row.filename);
+        const baseDirectory = path.resolve(__dirname, '..', 'Videos');
 
-        // Check if file exists
+        if (!fs.existsSync(baseDirectory)) {
+            fs.mkdirSync(baseDirectory, { recursive: true });
+        }
 
+        const videoPath = path.join(baseDirectory, row.filename);
+
+        fs.writeFileSync(videoPath, row.data);
         return {
             success: true,
             filePath: videoPath,
-
         };
     } catch (error) {
         console.error('Error fetching video:', error);
         throw new Error('Internal server error');
     }
 };
+
 
 module.exports = { uploadVideo, insertVideo, trimVideo, mergeVideos, resizeVideo , getVideoByToken};

@@ -24,7 +24,7 @@ components:
           type: string
 
 security:
-  - AuthorizationHeader: []  # Apply security globally
+  - AuthorizationHeader: []
 
 paths:
   /upload:
@@ -34,7 +34,7 @@ paths:
       summary: Upload a video file
       description: Uploads a video file and stores it in the system.
       security:
-        - AuthorizationHeader: []  # Apply security to this endpoint
+        - AuthorizationHeader: []  
       requestBody:
         content:
           multipart/form-data:
@@ -78,7 +78,7 @@ paths:
       summary: Trim a video file
       description: Trims a video file based on provided start and end times.
       security:
-        - AuthorizationHeader: []  # Apply security to this endpoint
+        - AuthorizationHeader: []  
       requestBody:
         content:
           application/json:
@@ -124,7 +124,7 @@ paths:
       summary: Merge multiple video files
       description: Merges multiple video files into one based on provided video IDs.
       security:
-        - AuthorizationHeader: []  # Apply security to this endpoint
+        - AuthorizationHeader: []  
       requestBody:
         content:
           application/json:
@@ -163,7 +163,7 @@ paths:
       summary: Verify video by token
       description: Retrieves video details based on a unique token and streams the video file if the token is valid.
       security:
-        - AuthorizationHeader: []  # Apply security to this endpoint
+        - AuthorizationHeader: [] 
       parameters:
         - in: query
           name: uniqueToken

@@ -50,7 +50,6 @@ describe('Video Service', () => {
                 .toThrow(`File size exceeds the maximum limit of ${MAX_SIZE / (1024 * 1024)} MB.`);
         });
 
-        // Add more tests for other cases...
     });
 
     describe('trimVideo', () => {
@@ -78,7 +77,7 @@ describe('Video Service', () => {
             expect(result).toBe(`./${outputFilename}`);
         });
 
-        // Add more tests for different cases...
+       
     });
 
     describe('mergeVideos', () => {
@@ -110,7 +109,7 @@ describe('Video Service', () => {
             expect(result).toBe(`./${outputFilename}`);
         });
 
-        // Add more tests for different cases...
+       
     });
 
     describe('resizeVideo', () => {
@@ -133,7 +132,7 @@ describe('Video Service', () => {
             expect(ffmpeg().size).toHaveBeenCalledWith(`${width}x${height}`);
         });
 
-        // Add more tests for different cases...
+       
     });
 
     describe('getVideoByToken', () => {
@@ -164,6 +163,6 @@ describe('Video Service', () => {
             expect(result).toHaveProperty('message', 'Link expired');
         });
 
-        // Add more tests for different cases...
+        
     });
 });
